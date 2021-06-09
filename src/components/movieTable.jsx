@@ -9,21 +9,29 @@ class MovieTable extends Component {
       count: 1,
    }
 
-   skaicius () {
-      return this.state.movies.length
-   }
-
    render() {
+      const {movies: mv} = this.state
+      {
+         if (mv.length === 0) {
+            return (
+                <div className="alert alert-warning">
+                   There are no movies at the moment
+                </div>
+            )
+         }
+      }
+
       return (
           <div>
              <div>
                 <h3> Please see our movies: </h3>
 
-                <p> This is how many movies are showing in movie-list : {this.skaicius()}</p>
+                <p> This is how many movies are showing in movie-list : {mv.length}</p>
 
                 <table className="table">
                    <thead>
                    <tr>
+                      <th scope="col">Id</th>
                       <th scope="col">Title</th>
                       <th scope="col">Genre_Id</th>
                       <th scope="col">Genre_name</th>
@@ -36,6 +44,7 @@ class MovieTable extends Component {
                    {this.state.movies.map((element) => (
                        <tbody>
                        <tr key={element._id}>
+                          <td>{element._id}</td>
                           <td>{element.title}</td>
                           <td>{element.genre._id}</td>
                           <td>{element.genre.name}</td>
@@ -43,7 +52,9 @@ class MovieTable extends Component {
                           <td>{element.dailyRentalRate}</td>
                           <td>{element.publishDate}</td>
                           <td>
-                             <button onClick={this.handleDelete} className="btn btn-danger btn-sm"> Delete</button>
+                             <button onClick={() => this.handleDelete(element._id)}
+                                     className="btn btn-danger btn-sm"> Delete
+                             </button>
                           </td>
                        </tr>
                        </tbody>
@@ -53,8 +64,9 @@ class MovieTable extends Component {
           </div>)
    }
 
-   handleDelete = () => {
-      console.log("deleting....")
+   handleDelete = (movieId) => {
+      const moviesWithoutTheOneWeDeleted = this.state.movies.filter((movie) => movie._id !== movieId)
+      this.setState({movies: moviesWithoutTheOneWeDeleted})
    }
 }
 
