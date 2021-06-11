@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {getMovies} from "../services/fakeMovieService";
+import MovieTableRow from "./movieTableRow";
 
 
 class MovieTable extends Component {
@@ -11,6 +12,7 @@ class MovieTable extends Component {
 
    render() {
       const {movies: mv} = this.state
+
       {
          if (mv.length === 0) {
             return (
@@ -27,37 +29,22 @@ class MovieTable extends Component {
                 <h3> Please see our movies: </h3>
 
                 <p> This is how many movies are showing in movie-list : {mv.length}</p>
-
+                <thead>
+                <tr>
+                   <th scope="col">Id</th>
+                   <th scope="col">Title</th>
+                   <th scope="col">Genre_name</th>
+                   <th scope="col">NumberInStock</th>
+                   <th scope="col">DailyRentalRate</th>
+                   <th scope="col">Publish Date</th>
+                   <th/>
+                </tr>
+                </thead>
                 <table className="table">
-                   <thead>
-                   <tr>
-                      <th scope="col">Id</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">Genre_Id</th>
-                      <th scope="col">Genre_name</th>
-                      <th scope="col">NumberInStock</th>
-                      <th scope="col">DailyRentalRate</th>
-                      <th scope="col">Publish Date</th>
-                      <th/>
-                   </tr>
-                   </thead>
                    {this.state.movies.map((element) => (
-                       <tbody>
-                       <tr key={element._id}>
-                          <td>{element._id}</td>
-                          <td>{element.title}</td>
-                          <td>{element.genre._id}</td>
-                          <td>{element.genre.name}</td>
-                          <td>{element.numberInStock}</td>
-                          <td>{element.dailyRentalRate}</td>
-                          <td>{element.publishDate}</td>
-                          <td>
-                             <button onClick={() => this.handleDelete(element._id)}
-                                     className="btn btn-danger btn-sm"> Delete
-                             </button>
-                          </td>
-                       </tr>
-                       </tbody>
+                       <MovieTableRow onDelete={this.handleDelete}
+                                      key={element._id}
+                                      value={element}/>
                    ))}
                 </table>
              </div>
